@@ -1,0 +1,10 @@
+# temp files
+*~
+*.swp
+.DS_Store
+Thumbs.db
+
+# build output
+*.o
+shell
+
