@@ -2,7 +2,7 @@
  * @file shell.h
  * @brief Function prototypes for the shell.
  *
- * @author Brian R. Snider (bsnider@georgefox.edu)
+ * @author Ceci Kurdelak (ckurdelak20@georgefox.edu)
  */
 
 #ifndef SHELL_H
