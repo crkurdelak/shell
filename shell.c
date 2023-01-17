@@ -26,5 +26,11 @@ int main() {
     If the command is exit, then exit; else, repeat from step 1.
      */
 
+    // while not exit:
+    //      output prompt to stdout
+    //      read user command from stdin
+    //      write command back to stdout
+    //      if command is exit, exit = true
+
     return 0;
 }
