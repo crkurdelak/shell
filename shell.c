@@ -18,6 +18,7 @@
  */
 int main() {
     // TODO implement shell
+    // TODO set up WSL
     /*
     Your first (and intentionally very minimal) version of the shell should do the following:
     Write a shell$ prompt to standard output;
@@ -26,11 +27,17 @@ int main() {
     If the command is exit, then exit; else, repeat from step 1.
      */
 
+    char* cmd[255]; // input buffer
     // while not exit:
-    //      output prompt to stdout
-    //      read user command from stdin
-    //      write command back to stdout
-    //      if command is exit, exit = true
+    //      output prompt to stdout "shell$ " (SYSCALL: SYS_write)
+    //      read user command from stdin      (SYSCALL: SYS_read)
 
-    return 0;
+    // branching logic to handle specific, well-defined commands
+    //      if command is "exit", exit = true TODO figure out string comparison in C (not a syscall)
+
+    // TODO handle empty input (pressing enter)
+    // TODO implement more specific commands in v2 and v3
+    // else write command back to stdout
+
+    return 0; // SYSCALL: SYS_exit
 }
