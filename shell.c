@@ -9,6 +9,7 @@
  */
 
 #include <sys/syscall.h>
+#include <stdbool.h>
 #include "shell.h"
 
 /**
@@ -27,17 +28,26 @@ int main() {
     If the command is exit, then exit; else, repeat from step 1.
      */
 
-    char* cmd[255]; // input buffer
+    char* cmd[255];     // input buffer
+    char* prompt = "shell$ ";
+    bool quit = false;
+
     // while not exit:
-    //      output prompt to stdout "shell$ " (SYSCALL: SYS_write)
-    //      read user command from stdin      (SYSCALL: SYS_read)
+    while (!quit) {
+        //      output prompt to stdout "shell$ " (SYSCALL: SYS_write)
+        SYS_write(cout, prompt, 7);
+        //      read user command from stdin      (SYSCALL: SYS_read)
+        SYS_read(cin, cmd, 255);
 
-    // branching logic to handle specific, well-defined commands
-    //      if command is "exit", exit = true TODO figure out string comparison in C (not a syscall)
+        // branching logic to handle specific, well-defined commands
+        //      if command is "exit", exit = true TODO figure out string comparison in C (not a syscall)
 
-    // TODO handle empty input (pressing enter)
-    // TODO implement more specific commands in v2 and v3
-    // else write command back to stdout
+        // TODO handle empty input (pressing enter)
+        // TODO implement more specific commands in v2 and v3
+        // else write command back to stdout
+        SYS_write(cout, cmd, 255);
+    }
 
     return 0; // SYSCALL: SYS_exit
+    SYS_exit;
 }
