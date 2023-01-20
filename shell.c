@@ -18,7 +18,7 @@
  */
 int main() {
     // TODO implement shell
-    // TODO set up WSL
+
     /*
     Your first (and intentionally very minimal) version of the shell should do the following:
     Write a shell$ prompt to standard output;
