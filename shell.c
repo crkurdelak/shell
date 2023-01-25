@@ -30,7 +30,7 @@ int main() {
     If the command is exit, then exit; else, repeat from step 1.
      */
 
-    char* cmd[255];     // input buffer
+    char cmd[255];     // input buffer
     char* prompt = "shell$ ";
     bool quit = false;
 
@@ -48,12 +48,11 @@ int main() {
 
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true TODO figure out string comparison in C (not a syscall)
-        if (strcmp(cmd, "exit") == 0) {
+        if (strcmp(cmd, "exit\n") == 0) {
             quit = true;
         }
-        else if (strcmp(cmd, "") == 0) {
-            // TODO handle empty input (pressing enter)
-            write(STDOUT_FILENO, "this is an empty prompt", 23);
+        else if (strcmp(cmd, "\n") == 0) {
+            // this does not print a newline
         }
         // TODO implement more specific commands in v2 and v3
         // else write command back to stdout
