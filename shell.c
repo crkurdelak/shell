@@ -45,7 +45,6 @@ int main() {
         write(STDOUT_FILENO, prompt, 7);
         // read user command from stdin      (SYSCALL: SYS_read)
         read(STDIN_FILENO, cmd, 255);
-        // TODO get just the command as string without extra nulls
 
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true TODO figure out string comparison in C (not a syscall)
@@ -54,13 +53,11 @@ int main() {
         }
         else if (strcmp(cmd, "") == 0) {
             // TODO handle empty input (pressing enter)
-            // print a newline
-            //write(STDOUT_FILENO, "\n", 1);
+            write(STDOUT_FILENO, "this is an empty prompt", 23);
         }
         // TODO implement more specific commands in v2 and v3
         // else write command back to stdout
         else {
-            // TODO find out why it's printing twice
             write(STDOUT_FILENO, cmd, 255);
         }
     }
