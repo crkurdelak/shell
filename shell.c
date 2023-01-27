@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
 #include "shell.h"
 
 /**
@@ -22,7 +23,8 @@
 int main() {
     // input buffer
     char cmd[255];
-    char* prompt = "shell$ ";       // TODO get current working directory and make that the prompt
+    // buffer for current working directory
+    char current_dir[255];
     bool quit = false;
 
     // while not exit:
@@ -32,9 +34,22 @@ int main() {
             cmd[i] = NULL;
         }
 
-        // output prompt to stdout "shell$ " (SYSCALL: SYS_write)
-        write(STDOUT_FILENO, prompt, 7);
-        // read user command from stdin      (SYSCALL: SYS_read)
+        // clear out working directory buffer
+        for (int i = 0; i < 255; i++) {
+            current_dir[i] = NULL;
+        }
+
+        // get the current working directory
+        getcwd(current_dir, 255);
+
+        // the prompt includes the current working directory
+        //char* prompt = strcat(current_dir, "$ ");
+        char* prompt = "shell$ ";
+
+        // output prompt to stdout
+        // TODO find out why this is not printing the prompt
+        printf("%s", prompt);
+        // read user command from stdin
         read(STDIN_FILENO, cmd, 255);
 
         // branching logic to handle specific, well-defined commands
@@ -42,13 +57,17 @@ int main() {
         if (strcmp(cmd, "exit\n") == 0) {
             quit = true;
         }
+        // TODO implement more specific commands in v2 and v3
+
+        // TODO implement pwd (print current working directory)
+        else if (strcmp(cmd, "pwd\n") == 0) {
+            printf("%s", current_dir);
+        }
+
+        // TODO implement cd (change current working directory)
         else if (strcmp(cmd, "\n") == 0) {
             // this does not print a newline
         }
-        // TODO implement more specific commands in v2 and v3
-        // TODO implement pwd (print current working directory)
-        // TODO implement cd (change current working directory)
-
 
         // TODO implement running executable programs using fork and exec syscalls (block using
         //  wait call until programs are finished running)
