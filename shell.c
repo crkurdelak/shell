@@ -22,7 +22,7 @@
 int main() {
     // input buffer
     char cmd[255];
-    char* prompt = "shell$ ";
+    char* prompt = "shell$ ";       // TODO get current working directory and make that the prompt
     bool quit = false;
 
     // while not exit:
@@ -46,6 +46,12 @@ int main() {
             // this does not print a newline
         }
         // TODO implement more specific commands in v2 and v3
+        // TODO implement pwd (print current working directory)
+        // TODO implement cd (change current working directory)
+
+
+        // TODO implement running executable programs using fork and exec syscalls (block using
+        //  wait call until programs are finished running)
         // else write command back to stdout
         else {
             write(STDOUT_FILENO, cmd, 255);
