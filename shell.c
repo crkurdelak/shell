@@ -42,13 +42,11 @@ int main() {
         // get the current working directory
         getcwd(current_dir, 255);
 
-        // the prompt includes the current working directory
-        //char* prompt = strcat(current_dir, "$ ");
-        char* prompt = "shell$ ";
-
+        // the prompt consists of the current working directory and "$ "
         // output prompt to stdout
-        // TODO find out why this is not printing the prompt
-        printf("%s", prompt);
+        printf("%s$ ", current_dir);
+        fflush(stdout);
+
         // read user command from stdin
         read(STDIN_FILENO, cmd, 255);
 
@@ -59,12 +57,16 @@ int main() {
         }
         // TODO implement more specific commands in v2 and v3
 
-        // TODO implement pwd (print current working directory)
         else if (strcmp(cmd, "pwd\n") == 0) {
-            printf("%s", current_dir);
+            printf("%s\n", current_dir);
+            fflush(stdout);
         }
 
         // TODO implement cd (change current working directory)
+        else if (strcmp(cmd, "cd\n") == 0) {
+            // change working directory
+        }
+
         else if (strcmp(cmd, "\n") == 0) {
             // this does not print a newline
         }
