@@ -8,11 +8,13 @@
  * @author Ceci Kurdelak (ckurdelak20@georgefox.edu)
  */
 
+#include <errno.h>
 #include <sys/syscall.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <sys/wait.h>
 #include "shell.h"
 
 /**
@@ -82,9 +84,28 @@ int main() {
 
         // TODO implement running executable programs using fork and exec syscalls (block using
         //  wait call until programs are finished running)
-        // else write command back to stdout
+        // else try to fork and exec what they typed
         else {
-            write(STDOUT_FILENO, cmd, 255);
+            //write(STDOUT_FILENO, cmd, 255);
+            pid_t fork_pid = fork();
+            if (fork_pid == 0) {
+                // TODO split using strtok and put them into args array
+                // child
+                // example
+                char* args[] = {"ls", NULL};
+                int exec_result = execvp("ls", args);
+                if (exec_result != 0) {
+                    // TODO error messages
+                    if (errno == 2) {
+                        printf("error: command %s not found\n", args[0]);
+                    }
+                }
+            }
+            else {
+                // wait for child process to finish
+                pid_t changed_pid = waitpid(fork_pid, NULL, 0);
+            }
+
         }
     }
 
