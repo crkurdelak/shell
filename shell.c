@@ -50,6 +50,11 @@ int main() {
         // read user command from stdin
         read(STDIN_FILENO, cmd, 255);
 
+        // TODO get the first part of the command
+        char* cmd_0;
+        cmd_0 = strcpy(cmd, cmd_0);
+        strtok(cmd_0, " ");
+
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true
         if (strcmp(cmd, "exit\n") == 0) {
@@ -63,8 +68,12 @@ int main() {
         }
 
         // TODO implement cd (change current working directory)
-        else if (strcmp(cmd, "cd\n") == 0) {
-            // change working directory
+
+        // if the first token of cmd is "cd"
+        else if (strcmp(cmd_0, "cd") == 0) {
+            // change working directory using chdir(path)
+            // split input on " " character
+            // second token is path
         }
 
         else if (strcmp(cmd, "\n") == 0) {
