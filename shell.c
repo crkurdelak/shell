@@ -53,9 +53,7 @@ int main() {
         read(STDIN_FILENO, cmd, 255);
 
         // TODO get the first part of the command
-        char* cmd_0;
-        cmd_0 = strcpy(cmd, cmd_0);
-        strtok(cmd_0, " ");
+        char* args[] = get_args(cmd);
 
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true
@@ -64,6 +62,7 @@ int main() {
         }
         // TODO implement more specific commands in v2 and v3
 
+        // prints the current working directory
         else if (strcmp(cmd, "pwd\n") == 0) {
             printf("%s\n", current_dir);
             fflush(stdout);
@@ -72,7 +71,7 @@ int main() {
         // TODO implement cd (change current working directory)
 
         // if the first token of cmd is "cd"
-        else if (strcmp(cmd_0, "cd") == 0) {
+        else if (strcmp(args[0], "cd") == 0) {
             // change working directory using chdir(path)
             // split input on " " character
             // second token is path
@@ -86,29 +85,50 @@ int main() {
         //  wait call until programs are finished running)
         // else try to fork and exec what they typed
         else {
-            //write(STDOUT_FILENO, cmd, 255);
-            pid_t fork_pid = fork();
-            if (fork_pid == 0) {
-                // TODO split using strtok and put them into args array
-                // child
-                // example
-                char* args[] = {"ls", NULL};
-                int exec_result = execvp("ls", args);
-                if (exec_result != 0) {
-                    // TODO error messages
-                    if (errno == 2) {
-                        printf("error: command %s not found\n", args[0]);
-                    }
-                }
-            }
-            else {
-                // wait for child process to finish
-                pid_t changed_pid = waitpid(fork_pid, NULL, 0);
-            }
-
+            fork_and_exec(cmd);
         }
     }
 
     //return 0; // SYSCALL: SYS_exit
     SYS_exit;
+}
+
+
+int fork_and_exec(char* cmd) {
+    //write(STDOUT_FILENO, cmd, 255);
+
+    // fork the current process
+    pid_t fork_pid = fork();
+
+    // if this is a child process
+    if (fork_pid == 0) {
+        char* args[] = get_args(cmd);
+
+        // example
+        //char* args[] = {"ls", NULL};
+
+        // try to execute the command as a program
+        int exec_result = execvp("ls", args);
+        if (exec_result != 0) {
+            // TODO error messages
+            if (errno == 1) {
+
+            }
+            else if (errno == 2) {
+                printf("error: command %s not found\n", args[0]);
+            }
+        }
+    }
+    else {
+        // wait for child process to finish
+        pid_t changed_pid = waitpid(fork_pid, NULL, 0);
+    }
+}
+
+
+char** get_args(char* cmd) {
+    // TODO split using strtok and put them into args array
+    char* cmd_0;
+    cmd_0 = strcpy(cmd, cmd_0);
+    strtok(cmd_0, " ");
 }
