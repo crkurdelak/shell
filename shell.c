@@ -53,7 +53,7 @@ int main() {
         read(STDIN_FILENO, cmd, 255);
 
         // TODO get the first part of the command
-        char* args[] = get_args(cmd);
+        char** args = get_args(cmd);
 
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true
@@ -94,7 +94,7 @@ int main() {
 }
 
 
-int fork_and_exec(char* cmd) {
+int fork_and_exec(char** args) {
     //write(STDOUT_FILENO, cmd, 255);
 
     // fork the current process
@@ -102,17 +102,12 @@ int fork_and_exec(char* cmd) {
 
     // if this is a child process
     if (fork_pid == 0) {
-        char* args[] = get_args(cmd);
-
-        // example
-        //char* args[] = {"ls", NULL};
-
         // try to execute the command as a program
-        int exec_result = execvp("ls", args);
+        int exec_result = execvp(args[0], args);
         if (exec_result != 0) {
             // TODO error messages
             if (errno == 1) {
-
+                printf("error: ");
             }
             else if (errno == 2) {
                 printf("error: command %s not found\n", args[0]);
@@ -128,7 +123,25 @@ int fork_and_exec(char* cmd) {
 
 char** get_args(char* cmd) {
     // TODO split using strtok and put them into args array
-    char* cmd_0;
-    cmd_0 = strcpy(cmd, cmd_0);
-    strtok(cmd_0, " ");
+    // array to hold the args
+    char* args[] = {};
+    char* current_token;
+
+    // copy cmd
+    char* cmd_copy;
+    // TODO fix problem here
+    strcpy(cmd_copy, cmd);
+
+
+    int i = 0;
+    // while there are still tokens
+    while (strlen(cmd_copy) > 0) {
+        // split off first token
+        current_token = strtok(cmd_copy, " ");
+        // put it in array
+        args[i] = current_token;
+        i++;
+    }
+
+    return args;
 }

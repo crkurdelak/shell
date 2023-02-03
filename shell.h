@@ -11,10 +11,10 @@
 // TODO add function prototypes
 /**
  * Forks the current process and tries to execute the given command as a program.
- * @param cmd the command entered by the user
+ * @param args the arguments entered by the user
  * @return 0 if successful, else returns 1
  */
-int fork_and_exec(char* cmd);
+int fork_and_exec(char** args);
 
 
 /**
