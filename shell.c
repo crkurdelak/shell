@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 #include "shell.h"
 
 /**
@@ -54,14 +55,18 @@ int main() {
         get_args(cmd, args);
 
         // branching logic to handle specific, well-defined commands
+        // TODO implement more specific commands in v3
+        // if the command is empty
+        if (strcmp(cmd, "\n") == 0) {
+            // this does not print a newline
+        }
         // if command is "exit", exit = true
-        if (strcmp(args[0], "exit\n") == 0) {
+        else if (strcmp(args[0], "exit") == 0) {
             quit = true;
         }
-        // TODO implement more specific commands in v3
 
         // prints the current working directory
-        else if (strcmp(args[0], "pwd\n") == 0) {
+        else if (strcmp(args[0], "pwd") == 0) {
             printf("%s\n", current_dir);
             fflush(stdout);
         }
@@ -75,24 +80,17 @@ int main() {
             chdir(path);
         }
 
-        else if (strcmp(args[0], "\n") == 0) {
-            // this does not print a newline
-        }
-
         // else try to fork and exec what they typed
         else {
             fork_and_exec(args);
         }
     }
 
-    //return 0; // SYSCALL: SYS_exit
-    SYS_exit;
+   exit(0);
 }
 
 
 int fork_and_exec(char* args[]) {
-    //write(STDOUT_FILENO, cmd, 255);
-
     // fork the current process
     pid_t fork_pid = fork();
 
@@ -100,25 +98,19 @@ int fork_and_exec(char* args[]) {
     if (fork_pid == 0) {
         // try to execute the command as a program
         int exec_result = execvp(args[0], args);
-        if (exec_result != 0) {
-            // TODO error messages
-            if (errno == 1) {
-                printf("error: ");
-            }
-            else if (errno == 2) {
-                printf("error: command %s not found\n", args[0]);
-            }
-        }
+        printf("error: could not execute command %s\n", args[0]);
+        exit(1);
     }
     else {
         // wait for child process to finish
         pid_t changed_pid = waitpid(fork_pid, NULL, 0);
     }
+    return 0;
 }
 
 
 void get_args(char* cmd, char* args_array[]) {
-    char* current_token = strtok(cmd, " ");
+    char* current_token = strtok(cmd, " \n");
     int i = 0;
     while (current_token) {
         // put current token in array
