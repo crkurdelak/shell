@@ -13,14 +13,14 @@
 /**
  * Prints the current working directory.
  * @param current_dir the current working directory
- * @return 0 if successful, else return 1
+ * @return 0 if successful, else return nonzero
  */
 int shell_cmd_pwd(char* current_dir);
 
 /**
  * Changes the current working directory to the given path.
  * @param path the path to the new workinf directory
- * @return 0 if successful, else return 1
+ * @return 0 if successful, else return nonzero
  */
 int shell_cmd_cd(char* path);
 
@@ -31,6 +31,6 @@ int shell_cmd_cd(char* path);
     If no arguments are provided, only the newline is written;
     If the first argument supplied to echo is -n, omit the trailing newline.
 
- * @return 0 if successful, else return 1
+ * @return 0 if successful, else return nonzero
  */
 int shell_cmd_echo();

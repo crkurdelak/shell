@@ -23,7 +23,7 @@
  * @return The exit status of the shell.
  */
 int main() {
-    int exit_status = 0;
+    int last_exit_status = 0;
 
     // input buffer
     char cmd[255];
@@ -67,22 +67,22 @@ int main() {
 
         // prints the current working directory
         else if (strcmp(args[0], "pwd") == 0) {
-            exit_status = shell_cmd_pwd(args[0]);
+            last_exit_status = shell_cmd_pwd(args[0]);
         }
 
         // if the first token of cmd is "cd"
         else if (strcmp(args[0], "cd") == 0) {
-            exit_status = shell_cmd_cd(args[1]);
+            last_exit_status = shell_cmd_cd(args[1]);
         }
 
         else if (strcmp(args[0], "echo") == 0) {
             // TODO implement echo
-            exit_status = shell_cmd_echo();
+            last_exit_status = shell_cmd_echo();
         }
 
         // else try to fork and exec what they typed
         else {
-            exit_status = fork_and_exec(args);
+            last_exit_status = fork_and_exec(args);
         }
     }
 

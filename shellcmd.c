@@ -16,19 +16,16 @@
 int shell_cmd_pwd(char* current_dir) {
     printf("%s\n", current_dir);
     fflush(stdout);
-    // TODO exit statuses
     return 0;
 }
 
 int shell_cmd_cd(char* path) {
-    chdir(path);
-    // TODO exit statuses
-    return 0;
+    // TODO double check return val
+    return chdir(path);
 }
 
 int shell_cmd_echo() {
     // TODO implement echo
     // TODO handle echo $?
-    // TODO exit statuses
     return 0;
 }
