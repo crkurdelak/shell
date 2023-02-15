@@ -1,10 +1,36 @@
-//
-// Created by crkur on 2/15/2023.
-//
+/**
+ * @file shellcmd.h
+ * @brief Function prototypes for shellcmd.
+ *
+ * @author Ceci Kurdelak (ckurdelak20@georgefox.edu)
+ */
 
 #ifndef SHELL_SHELLCMD_H
 #define SHELL_SHELLCMD_H
 
 #endif //SHELL_SHELLCMD_H
 
-// TODO migrate commands to functions
+/**
+ * Prints the current working directory.
+ * @param current_dir the current working directory
+ * @return 0 if successful, else return 1
+ */
+int shell_cmd_pwd(char* current_dir);
+
+/**
+ * Changes the current working directory to the given path.
+ * @param path the path to the new workinf directory
+ * @return 0 if successful, else return 1
+ */
+int shell_cmd_cd(char* path);
+
+/**
+ * Prints arguments according to the following guidelines:
+
+    Write arguments to standard output, followed by a newline;
+    If no arguments are provided, only the newline is written;
+    If the first argument supplied to echo is -n, omit the trailing newline.
+
+ * @return 0 if successful, else return 1
+ */
+int shell_cmd_echo();

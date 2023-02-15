@@ -8,8 +8,6 @@
  * @author Ceci Kurdelak (ckurdelak20@georgefox.edu)
  */
 
-#include <errno.h>
-#include <sys/syscall.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
@@ -17,6 +15,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include "shell.h"
+#include "shellcmd.h"
 
 /**
  * @brief Main entry point of the shell.
@@ -24,6 +23,8 @@
  * @return The exit status of the shell.
  */
 int main() {
+    int exit_status = 0;
+
     // input buffer
     char cmd[255];
     // buffer for current working directory
@@ -55,7 +56,6 @@ int main() {
         get_args(cmd, args);
 
         // branching logic to handle specific, well-defined commands
-        // TODO implement more specific commands in v3
         // if the command is empty
         if (strcmp(cmd, "\n") == 0) {
             // this does not print a newline
@@ -67,22 +67,22 @@ int main() {
 
         // prints the current working directory
         else if (strcmp(args[0], "pwd") == 0) {
-            printf("%s\n", current_dir);
-            fflush(stdout);
+            exit_status = shell_cmd_pwd(args[0]);
         }
 
         // if the first token of cmd is "cd"
         else if (strcmp(args[0], "cd") == 0) {
-            // change working directory using chdir(path)
-            // split input on " " character
-            // second token is path
-            char* path = args[1];
-            chdir(path);
+            exit_status = shell_cmd_cd(args[1]);
+        }
+
+        else if (strcmp(args[0], "echo") == 0) {
+            // TODO implement echo
+            exit_status = shell_cmd_echo();
         }
 
         // else try to fork and exec what they typed
         else {
-            fork_and_exec(args);
+            exit_status = fork_and_exec(args);
         }
     }
 
@@ -105,6 +105,7 @@ int fork_and_exec(char* args[]) {
         // wait for child process to finish
         pid_t changed_pid = waitpid(fork_pid, NULL, 0);
     }
+    // TODO exit statuses
     return 0;
 }
 
