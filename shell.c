@@ -52,8 +52,12 @@ int main() {
         // read user command from stdin
         read(STDIN_FILENO, cmd, 255);
 
-        // TODO get the first part of the command
-        char** args = get_args(cmd);
+        // the args from the user's command
+        char* args[255];
+        for (int i = 0; i < 255; i++) {
+            args[i] = NULL;
+        }
+        get_args(cmd, args);
 
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true
@@ -69,12 +73,13 @@ int main() {
         }
 
         // TODO implement cd (change current working directory)
-
         // if the first token of cmd is "cd"
         else if (strcmp(args[0], "cd") == 0) {
             // change working directory using chdir(path)
             // split input on " " character
             // second token is path
+            char* path = args[1];
+            chdir(path);
         }
 
         else if (strcmp(cmd, "\n") == 0) {
@@ -121,27 +126,16 @@ int fork_and_exec(char** args) {
 }
 
 
-char** get_args(char* cmd) {
-    // TODO split using strtok and put them into args array
-    // array to hold the args
-    char* args[] = {};
+void get_args(char* cmd, char** args_array) {
     char* current_token;
 
-    // copy cmd
-    char* cmd_copy;
-    // TODO fix problem here
-    strcpy(cmd_copy, cmd);
-
-
+    char* token = strtok(cmd, " ");
     int i = 0;
-    // while there are still tokens
-    while (strlen(cmd_copy) > 0) {
-        // split off first token
-        current_token = strtok(cmd_copy, " ");
-        // put it in array
-        args[i] = current_token;
+    while (token) {
+        // put current token in array
+        args_array[i] = current_token;
         i++;
+        // get new token
+        token = strtok(NULL, " ");
     }
-
-    return args;
 }
