@@ -32,14 +32,10 @@ int main() {
     // while not exit:
     while (!quit) {
         // clear out input buffer
-        for (int i = 0; i < 255; i++) {
-            cmd[i] = NULL;
-        }
+        memset(cmd, '\0', 255);
 
         // clear out working directory buffer
-        for (int i = 0; i < 255; i++) {
-            current_dir[i] = NULL;
-        }
+        memset(current_dir, '\0', 255);
 
         // get the current working directory
         getcwd(current_dir, 255);
@@ -54,25 +50,22 @@ int main() {
 
         // the args from the user's command
         char* args[255];
-        for (int i = 0; i < 255; i++) {
-            args[i] = NULL;
-        }
+        memset(args, '\0', 255);
         get_args(cmd, args);
 
         // branching logic to handle specific, well-defined commands
         // if command is "exit", exit = true
-        if (strcmp(cmd, "exit\n") == 0) {
+        if (strcmp(args[0], "exit\n") == 0) {
             quit = true;
         }
-        // TODO implement more specific commands in v2 and v3
+        // TODO implement more specific commands in v3
 
         // prints the current working directory
-        else if (strcmp(cmd, "pwd\n") == 0) {
+        else if (strcmp(args[0], "pwd\n") == 0) {
             printf("%s\n", current_dir);
             fflush(stdout);
         }
 
-        // TODO implement cd (change current working directory)
         // if the first token of cmd is "cd"
         else if (strcmp(args[0], "cd") == 0) {
             // change working directory using chdir(path)
@@ -82,15 +75,13 @@ int main() {
             chdir(path);
         }
 
-        else if (strcmp(cmd, "\n") == 0) {
+        else if (strcmp(args[0], "\n") == 0) {
             // this does not print a newline
         }
 
-        // TODO implement running executable programs using fork and exec syscalls (block using
-        //  wait call until programs are finished running)
         // else try to fork and exec what they typed
         else {
-            fork_and_exec(cmd);
+            fork_and_exec(args);
         }
     }
 
@@ -99,7 +90,7 @@ int main() {
 }
 
 
-int fork_and_exec(char** args) {
+int fork_and_exec(char* args[]) {
     //write(STDOUT_FILENO, cmd, 255);
 
     // fork the current process
@@ -126,16 +117,14 @@ int fork_and_exec(char** args) {
 }
 
 
-void get_args(char* cmd, char** args_array) {
-    char* current_token;
-
-    char* token = strtok(cmd, " ");
+void get_args(char* cmd, char* args_array[]) {
+    char* current_token = strtok(cmd, " ");
     int i = 0;
-    while (token) {
+    while (current_token) {
         // put current token in array
         args_array[i] = current_token;
         i++;
         // get new token
-        token = strtok(NULL, " ");
+        current_token = strtok(NULL, " \n");
     }
 }
