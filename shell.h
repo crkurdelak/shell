@@ -20,7 +20,8 @@ int fork_and_exec(char** args);
  * Extracts an array of args from the given command string.
  * @param cmd the command entered by the user
  * @param args_array the array in which to store the args
+ * @return 1 if background, else 0 TODO better comment
  */
-void get_args(char* cmd, char* args_array[]);
+int get_args(char* cmd, char* args_array[]);
 
 #endif /* SHELL_H */

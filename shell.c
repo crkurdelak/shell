@@ -109,6 +109,8 @@ int fork_and_exec(char* args[]) {
     }
     else {
         // check for & as last arg
+        // get length of array
+        // count array entries until find null
         if() {
             // wait for child process to finish
             pid_t changed_pid = waitpid(fork_pid, NULL, 0);
@@ -119,14 +121,18 @@ int fork_and_exec(char* args[]) {
 }
 
 
-void get_args(char* cmd, char* args_array[]) {
+int get_args(char* cmd, char* args_array[]) {
+    // check if last char is &
     char* current_token = strtok(cmd, " \n");
     int i = 0;
     while (current_token) {
+        // if token is &, do not put in array
         // put current token in array
         args_array[i] = current_token;
         i++;
         // get new token
         current_token = strtok(NULL, " \n");
     }
+    // return 1 if background (&) else return 0
+    return 0;
 }

@@ -38,11 +38,13 @@ int shell_cmd_echo(char* args[], int last_exit_status) {
         // if args[1] is -n, do not print \n
         if (strcmp(args[1], "-n") == 0) {
             // print args[2]
+            // TODO loop
             printf("%s", args[2]);
         }
         // else print \n
         else {
             // print args[1]
+            // TODO loop
             printf("%s\n", args[1]);
         }
     }
