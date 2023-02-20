@@ -91,8 +91,14 @@ int main() {
 
 
 int fork_and_exec(char* args[]) {
+    int exit_code = 0;
     // fork the current process
     pid_t fork_pid = fork();
+
+    // TODO Implement background jobs by supporting a trailing & metacharacter after any entered
+    //  external program invocation. For example, executing cp largeFile.zip /mnt/floppy/ & runs
+    //  cp in the background to permit copying a large file without blocking the shell. To
+    //  achieve this, you'll need to not call wait when the & metacharacter is present.
 
     // if this is a child process
     if (fork_pid == 0) {
@@ -102,11 +108,14 @@ int fork_and_exec(char* args[]) {
         exit(1);
     }
     else {
-        // wait for child process to finish
-        pid_t changed_pid = waitpid(fork_pid, NULL, 0);
+        // check for & as last arg
+        if() {
+            // wait for child process to finish
+            pid_t changed_pid = waitpid(fork_pid, NULL, 0);
+        }
     }
     // TODO exit statuses
-    return 0;
+    return exit_code;
 }
 
 

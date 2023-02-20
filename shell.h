@@ -8,7 +8,6 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-// TODO add function prototypes
 /**
  * Forks the current process and tries to execute the given command as a program.
  * @param args the arguments entered by the user

@@ -31,6 +31,8 @@ int shell_cmd_cd(char* path);
     If no arguments are provided, only the newline is written;
     If the first argument supplied to echo is -n, omit the trailing newline.
 
+ * @param args the arguments
+ * @param last_exit_status the exit status of the last command
  * @return 0 if successful, else return nonzero
  */
-int shell_cmd_echo();
+int shell_cmd_echo(char* args[], int last_exit_status);
