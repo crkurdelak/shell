@@ -53,7 +53,7 @@ int main() {
         // the args from the user's command
         char* args[255];
         memset(args, '\0', 255);
-        get_args(cmd, args);
+        int is_bg = get_args(cmd, args);
 
         // branching logic to handle specific, well-defined commands
         // if the command is empty
@@ -76,13 +76,12 @@ int main() {
         }
 
         else if (strcmp(args[0], "echo") == 0) {
-            // TODO implement echo
-            last_exit_status = shell_cmd_echo();
+            last_exit_status = shell_cmd_echo(args, last_exit_status);
         }
 
         // else try to fork and exec what they typed
         else {
-            last_exit_status = fork_and_exec(args);
+            last_exit_status = fork_and_exec(args, is_bg);
         }
     }
 
@@ -90,15 +89,10 @@ int main() {
 }
 
 
-int fork_and_exec(char* args[]) {
+int fork_and_exec(char* args[], int is_bg) {
     int exit_code = 0;
     // fork the current process
     pid_t fork_pid = fork();
-
-    // TODO Implement background jobs by supporting a trailing & metacharacter after any entered
-    //  external program invocation. For example, executing cp largeFile.zip /mnt/floppy/ & runs
-    //  cp in the background to permit copying a large file without blocking the shell. To
-    //  achieve this, you'll need to not call wait when the & metacharacter is present.
 
     // if this is a child process
     if (fork_pid == 0) {
@@ -108,31 +102,34 @@ int fork_and_exec(char* args[]) {
         exit(1);
     }
     else {
-        // check for & as last arg
-        // get length of array
-        // count array entries until find null
-        if() {
+        // do not wait for child if current process is a background job
+        if(is_bg == 0) {
             // wait for child process to finish
             pid_t changed_pid = waitpid(fork_pid, NULL, 0);
         }
     }
-    // TODO exit statuses
     return exit_code;
 }
 
 
 int get_args(char* cmd, char* args_array[]) {
+    int is_bg = 0;     // 1 if the command is a background job, else 0
     // check if last char is &
+    int cmd_len = strlen(cmd);
+    if (strcmp(cmd[cmd_len - 1], "&") == 1) {
+        is_bg = 1;
+    }
     char* current_token = strtok(cmd, " \n");
     int i = 0;
     while (current_token) {
         // if token is &, do not put in array
-        // put current token in array
-        args_array[i] = current_token;
+        if (strcmp(current_token, "&") != 0) {
+            // put current token in array
+            args_array[i] = current_token;
+        }
         i++;
         // get new token
         current_token = strtok(NULL, " \n");
     }
-    // return 1 if background (&) else return 0
-    return 0;
+    return is_bg;
 }

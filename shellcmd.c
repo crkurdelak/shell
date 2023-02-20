@@ -37,22 +37,27 @@ int shell_cmd_echo(char* args[], int last_exit_status) {
         char* current_arg = NULL;
         // if args[1] is -n, do not print \n
         if (strcmp(args[1], "-n") == 0) {
-            // print args[2]
-            // TODO loop
-            printf("%s", args[2]);
+            // print args[2]-end
+            int i = 2;
+            current_arg = args[i];
+            while(current_arg) {
+                printf("%s", current_arg);
+                i++;
+                current_arg = args[i];
+            }
         }
         // else print \n
         else {
-            // print args[1]
-            // TODO loop
-            printf("%s\n", args[1]);
+            // print args[1]-end
+            int i = 2;
+            current_arg = args[i];
+            while(current_arg) {
+                printf("%s", current_arg);
+                i++;
+                current_arg = args[i];
+            }
+            printf("\n");
         }
     }
-
-
-    // Write arguments to standard output, followed by a newline;
-    // If no arguments are provided, only the newline is written;
-    // If the first argument supplied to echo is -n, omit the trailing newline.
-
     return 0;
 }
