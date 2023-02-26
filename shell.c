@@ -99,13 +99,16 @@ int fork_and_exec(char* args[], int is_bg) {
         // try to execute the command as a program
         int exec_result = execvp(args[0], args);
         printf("error: could not execute command %s\n", args[0]);
+        exit_code = 1;
         exit(1);
     }
     else {
         // do not wait for child if current process is a background job
         if(is_bg == 0) {
             // wait for child process to finish
-            pid_t changed_pid = waitpid(fork_pid, NULL, 0);
+            int wait_status;
+            pid_t changed_pid = waitpid(fork_pid, &wait_status, 0);
+            exit_code = WEXITSTATUS(wait_status);
         }
     }
     return exit_code;
@@ -116,7 +119,9 @@ int get_args(char* cmd, char* args_array[]) {
     int is_bg = 0;     // 1 if the command is a background job, else 0
     // check if last char is &
     int cmd_len = strlen(cmd);
-    if (strcmp(cmd[cmd_len - 1], "&") == 1) {
+    char* last_char = &cmd[cmd_len - 2];
+    // TODO fix this
+    if (strcmp(last_char, "&\n") == 1) {
         is_bg = 1;
     }
     char* current_token = strtok(cmd, " \n");
