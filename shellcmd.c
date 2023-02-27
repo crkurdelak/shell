@@ -41,7 +41,7 @@ int shell_cmd_echo(char* args[], int last_exit_status) {
             int i = 2;
             current_arg = args[i];
             while(current_arg) {
-                printf("%s", current_arg);
+                printf("%s ", current_arg);
                 i++;
                 current_arg = args[i];
             }
@@ -52,7 +52,7 @@ int shell_cmd_echo(char* args[], int last_exit_status) {
             int i = 1;
             current_arg = args[i];
             while(current_arg) {
-                printf("%s", current_arg);
+                printf("%s ", current_arg);
                 i++;
                 current_arg = args[i];
             }
