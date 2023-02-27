@@ -120,7 +120,6 @@ int get_args(char* cmd, char* args_array[]) {
     // check if last char is &
     int cmd_len = strlen(cmd);
     char* last_char = &cmd[cmd_len - 2];
-    // TODO fix this
     if (strcmp(last_char, "&\n") == 1) {
         is_bg = 1;
     }

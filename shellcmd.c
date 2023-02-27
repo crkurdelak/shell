@@ -49,7 +49,7 @@ int shell_cmd_echo(char* args[], int last_exit_status) {
         // else print \n
         else {
             // print args[1]-end
-            int i = 2;
+            int i = 1;
             current_arg = args[i];
             while(current_arg) {
                 printf("%s", current_arg);
