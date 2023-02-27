@@ -67,7 +67,7 @@ int main() {
 
         // prints the current working directory
         else if (strcmp(args[0], "pwd") == 0) {
-            last_exit_status = shell_cmd_pwd(args[0]);
+            last_exit_status = shell_cmd_pwd(current_dir);
         }
 
         // if the first token of cmd is "cd"
@@ -120,7 +120,7 @@ int get_args(char* cmd, char* args_array[]) {
     // check if last char is &
     int cmd_len = strlen(cmd);
     char* last_char = &cmd[cmd_len - 2];
-    if (strcmp(last_char, "&\n") == 1) {
+    if (strcmp(last_char, "&\n") == 0) {
         is_bg = 1;
     }
     char* current_token = strtok(cmd, " \n");
